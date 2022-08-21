@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+
+    <script>
+      function createPost() {
+        // get the values entered from the page and store them
+        var postTitle = $("#post-title").val()
+        var postBody = $("#post-body").val()
+
+        // check if either of the fields are empty
+        $("#error").text("")
+        if (postTitle == "") {
+          $("#error").text("Post title cannot be empty.")
+        } else if (postBody == "") {
+          $("#error").text("Post body cannot be empty.")
+        } else {
+          // if everything is good, submit a POST request to create the post
+          $.ajax({
+            url: `https://gorest.co.in/public/v2/users/235/posts`,
+            data: {
+              "title": postTitle, 
+              "body": postBody
+            },
+            headers: {
+              "Authorization" : "Bearer a7b56c7847a4aa4a8ac873de7f8604dd6ecca9976bf68b07332fdeb357dd3aea"
+            },
+            type: 'POST',
+            success: function() {
+              window.location.href = "/index.html"
+            }
+          })
+          
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <div class="container px-4 mx-auto pb-8">
+      <p class="font-bold text-5xl mt-8">CRUD with API</p>
+  
+      <div class="mt-8">
+        <div class="flex justify-between items-center">
+          <p class="text-3xl font-medium">Create New Post:</p>
+
+          <a href="/index.html" class="bg-blue-600 px-4 py-2 rounded-md text-white font-bold">Back to Posts</a>
+        </div>
+
+        <div class="mt-8 w-full space-y-4">
+          <p class="font-medium text-2xl">Title: </p>
+          <input id="post-title" class="border-2 border-black rounded-md p-2 w-full" type="text" />
+
+          <p class="font-medium text-2xl">Body: </p>
+          <textarea id="post-body" rows="6" class="border-2 border-black rounded-md p-2 w-full" type="text"></textarea>
+
+          <div class="flex space-x-4 items-center">
+            <button onclick="createPost()" class="bg-blue-600 px-8 py-3 rounded-md text-white font-bold">Create Post</button>
+            <p id="error" class="text-red-600 font-bold"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
